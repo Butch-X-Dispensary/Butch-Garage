@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { 
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 import { VehicleCard } from './components/VehicleCard';
 import { BlueprintDisplay } from './components/BlueprintDisplay';
@@ -731,7 +731,7 @@ const generateTrendData = (seed: string) => {
   for (let i = 0; i < seed.length; i++) {
     hash = seed.charCodeAt(i) + ((hash << 5) - hash);
   }
-  
+
   return days.map((day, i) => {
     const val = Math.abs((hash + i * 1337) % 1000) + 1500;
     return {
@@ -787,7 +787,7 @@ const App: React.FC = () => {
   const [typeFilter, setTypeFilter] = useState<string>('All');
   const [originFilter, setOriginFilter] = useState<string>('All');
   const [sortBy, setSortBy] = useState<SortKey>('year');
-  
+
   const [selectedBlueprint, setSelectedBlueprint] = useState<BlueprintScript | null>(null);
   const [selectedVehicleForDetail, setSelectedVehicleForDetail] = useState<Vehicle | null>(null);
   const [tuningVehicle, setTuningVehicle] = useState<Vehicle | null>(null);
@@ -796,17 +796,17 @@ const App: React.FC = () => {
   const [isDispatchingSocial, setIsDispatchingSocial] = useState(false);
   const [isGlobalNexusOpen, setIsGlobalNexusOpen] = useState(false);
   const [selectedChartVehicleId, setSelectedChartVehicleId] = useState<string>(INITIAL_VEHICLES[0].id);
-  
+
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationProgress, setGenerationProgress] = useState(0);
   const [currentStageIdx, setCurrentStageIdx] = useState(0);
   const [statusLog, setStatusLog] = useState<string[]>([]);
-  
+
   const [isProposing, setIsProposing] = useState(false);
   const [isFinancing, setIsFinancing] = useState(false);
-  const [proposalData, setProposalData] = useState<{location: string, challenge: string}>({location: '', challenge: ''});
-  const [financeData, setFinanceData] = useState<{sector: string, goal: string}>({sector: '', goal: ''});
-  
+  const [proposalData, setProposalData] = useState<{ location: string, challenge: string }>({ location: '', challenge: '' });
+  const [financeData, setFinanceData] = useState<{ sector: string, goal: string }>({ sector: '', goal: '' });
+
   const [activeProposal, setActiveProposal] = useState<ProjectProposal | null>(null);
   const [activeSynergy, setActiveSynergy] = useState<FinancialSynergy | null>(null);
 
@@ -822,7 +822,7 @@ const App: React.FC = () => {
 
   const uniqueYears = useMemo(() => {
     const years = vehicles.map(v => v.year);
-    return ['All', ...Array.from(new Set(years)).sort((a, b) => b - a).map(String)];
+    return ['All', ...Array.from(new Set(years)).sort((a, b) => (b as number) - (a as number)).map(String)];
   }, [vehicles]);
 
   const uniqueTypes = useMemo(() => {
@@ -837,17 +837,17 @@ const App: React.FC = () => {
 
   const filteredAndSortedVehicles = useMemo(() => {
     const lowSearch = searchTerm.toLowerCase();
-    
+
     let result = vehicles.filter(v => {
-      const matchSearch = searchTerm === '' || 
-        v.name.toLowerCase().includes(lowSearch) || 
+      const matchSearch = searchTerm === '' ||
+        v.name.toLowerCase().includes(lowSearch) ||
         v.type.toLowerCase().includes(lowSearch) ||
         v.year.toString().includes(lowSearch);
       const matchMarket = marketFilter === 'All' || v.marketStatus === marketFilter;
       const matchYear = yearFilter === 'All' || v.year.toString() === yearFilter;
       const matchType = typeFilter === 'All' || v.type === typeFilter;
       const matchOrigin = originFilter === 'All' || v.origin === originFilter;
-      
+
       return matchSearch && matchMarket && matchYear && matchType && matchOrigin;
     });
 
@@ -894,15 +894,15 @@ const App: React.FC = () => {
     };
 
     const stagePromise = simulateStages();
-    
+
     try {
       const blueprint = await generateVehicleBlueprint(v.name, v.type, v.origin);
       await stagePromise;
-      
+
       setGenerationProgress(100);
       setStatusLog(prev => [...prev, "DATA_PACKET_VERIFIED", "UPLINK_SUCCESS"]);
       sounds.play('success');
-      
+
       setTimeout(() => {
         setSelectedBlueprint(blueprint);
         setIsGenerating(false);
@@ -921,7 +921,7 @@ const App: React.FC = () => {
     sounds.play('action');
     setIsGenerating(true);
     setStatusLog([`SYNERGY_INIT: ${financeData.sector}`]);
-    
+
     try {
       const roadmap = await generateFinancialSynergy(financeData.sector, financeData.goal);
       setGenerationProgress(100);
@@ -944,7 +944,7 @@ const App: React.FC = () => {
     sounds.play('action');
     setIsGenerating(true);
     setStatusLog([`IMPACT_INIT: ${proposalData.location}`]);
-    
+
     try {
       const proposal = await generateProjectProposal(proposalData.location, proposalData.challenge);
       setGenerationProgress(100);
@@ -991,7 +991,7 @@ const App: React.FC = () => {
 
       <nav className="p-8 border-b border-cyan-500/20 bg-black/80 sticky top-[30px] z-[90] backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-6 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+          <div className="flex items-center gap-6 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <div className="w-14 h-14 bg-cyan-500 rounded-lg flex items-center justify-center font-black text-3xl font-orbitron text-black shadow-[0_0_30px_rgba(6,182,212,0.6)] group-hover:scale-110 transition-transform">B</div>
             <div>
               <h1 className="font-orbitron text-3xl font-black tracking-tighter text-white uppercase italic">
@@ -1001,19 +1001,19 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className="flex gap-4 items-center">
-            <button 
+            <button
               onClick={() => { sounds.play('modalOpen'); setIsGlobalNexusOpen(true); }}
               className="px-8 py-3 bg-white/5 border-2 border-cyan-500/50 text-cyan-400 rounded-xl text-[11px] font-black uppercase tracking-[0.2em] hover:bg-cyan-500 hover:text-black hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all"
             >
               GLOBAL NEXUS
             </button>
-            <button 
+            <button
               onClick={() => { sounds.play('modalOpen'); setIsSynthesizingAsset(true); }}
               className="px-8 py-3 bg-cyan-500 text-black rounded-xl text-[11px] font-black uppercase tracking-[0.2em] hover:bg-cyan-400 shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all"
             >
               SYNTH-SALE
             </button>
-            <button 
+            <button
               onClick={() => { sounds.play('modalOpen'); setIsDispatchingSocial(true); }}
               className="px-8 py-3 bg-white/5 border-2 border-magenta-500/50 text-magenta-400 rounded-xl text-[11px] font-black uppercase tracking-[0.2em] hover:bg-magenta-500 hover:text-white hover:shadow-[0_0_30px_rgba(217,70,239,0.5)] transition-all neon-text-magenta"
             >
@@ -1034,7 +1034,7 @@ const App: React.FC = () => {
               {COMMUNITY_STATS.map((stat, i) => (
                 <div key={i} className="bg-white/[0.03] border border-cyan-500/10 p-6 rounded-2xl hover:border-cyan-500/40 hover:bg-white/[0.05] transition-all group relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-8 h-8 opacity-10 group-hover:opacity-30 transition-opacity">
-                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" /></svg>
                   </div>
                   <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-1">{stat.label}</span>
                   <span className="text-2xl font-orbitron font-black text-white group-hover:text-cyan-400 transition-colors">{stat.value}</span>
@@ -1046,44 +1046,44 @@ const App: React.FC = () => {
               <p className="text-xs text-gray-400 leading-relaxed italic">"Executive hubs in Neo-Cebu reporting optimal adoption rates. Deploying 50+ new models to the manifest."</p>
             </div>
           </div>
-          
+
           <div className="lg:col-span-8 bg-black/40 border border-cyan-500/20 p-8 rounded-[2.5rem] h-[400px] relative overflow-hidden group/chart backdrop-blur-xl shadow-2xl">
-             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
-             
-             <div className="relative h-full flex flex-col">
-                <div className="flex justify-between items-start mb-8">
-                  <div>
-                    <span className="text-[9px] font-black text-cyan-500/60 uppercase tracking-[0.5em]">Global Resonance Flow</span>
-                    <h3 className="font-orbitron text-2xl font-black text-white uppercase tracking-tighter italic">{currentChartVehicle?.name || 'NETWORK STATS'}</h3>
-                  </div>
-                </div>
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
 
-                <div className="flex-1 w-full min-h-0">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={chartData}>
-                      <defs>
-                        <linearGradient id="colorCyan" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#06b6d4" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff05" />
-                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#4b5563', fontSize: 10, fontWeight: 900}} dy={10} />
-                      <YAxis hide />
-                      <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#06b6d4', strokeWidth: 1 }} />
-                      <Area type="monotone" dataKey="value" stroke="#06b6d4" strokeWidth={4} fillOpacity={1} fill="url(#colorCyan)" animationDuration={2000} activeDot={{ r: 8, stroke: '#fff', strokeWidth: 2, fill: '#06b6d4' }} />
-                    </AreaChart>
-                  </ResponsiveContainer>
+            <div className="relative h-full flex flex-col">
+              <div className="flex justify-between items-start mb-8">
+                <div>
+                  <span className="text-[9px] font-black text-cyan-500/60 uppercase tracking-[0.5em]">Global Resonance Flow</span>
+                  <h3 className="font-orbitron text-2xl font-black text-white uppercase tracking-tighter italic">{currentChartVehicle?.name || 'NETWORK STATS'}</h3>
                 </div>
+              </div>
 
-                <div className="mt-6 flex flex-wrap gap-3 justify-center">
-                   {['All', 'Available', 'Vaulted', 'Auctioning', 'Pre-Order'].map((filter) => (
-                     <button key={filter} onClick={() => { sounds.play('hover'); setMarketFilter(filter as any); }} className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all border-2 ${marketFilter === filter ? 'bg-cyan-500 text-black border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.5)]' : 'bg-transparent text-gray-500 border-white/5 hover:border-cyan-500/50 hover:text-cyan-400'}`}>
-                       {filter}
-                     </button>
-                   ))}
-                </div>
-             </div>
+              <div className="flex-1 w-full min-h-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={chartData}>
+                    <defs>
+                      <linearGradient id="colorCyan" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff05" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#4b5563', fontSize: 10, fontWeight: 900 }} dy={10} />
+                    <YAxis hide />
+                    <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#06b6d4', strokeWidth: 1 }} />
+                    <Area type="monotone" dataKey="value" stroke="#06b6d4" strokeWidth={4} fillOpacity={1} fill="url(#colorCyan)" animationDuration={2000} activeDot={{ r: 8, stroke: '#fff', strokeWidth: 2, fill: '#06b6d4' }} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-3 justify-center">
+                {['All', 'Available', 'Vaulted', 'Auctioning', 'Pre-Order'].map((filter) => (
+                  <button key={filter} onClick={() => { sounds.play('hover'); setMarketFilter(filter as any); }} className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all border-2 ${marketFilter === filter ? 'bg-cyan-500 text-black border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.5)]' : 'bg-transparent text-gray-500 border-white/5 hover:border-cyan-500/50 hover:text-cyan-400'}`}>
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
@@ -1109,8 +1109,8 @@ const App: React.FC = () => {
               ))
             ) : (
               <div className="col-span-full py-32 text-center space-y-6">
-                 <div className="text-4xl font-orbitron font-black text-gray-800 uppercase italic tracking-tighter hover:text-cyan-500 transition-colors">NO ASSETS DETECTED</div>
-                 <p className="text-[12px] text-gray-600 uppercase font-black tracking-[0.8em] animate-pulse">RECALIBRATE FILTER MATRIX</p>
+                <div className="text-4xl font-orbitron font-black text-gray-800 uppercase italic tracking-tighter hover:text-cyan-500 transition-colors">NO ASSETS DETECTED</div>
+                <p className="text-[12px] text-gray-600 uppercase font-black tracking-[0.8em] animate-pulse">RECALIBRATE FILTER MATRIX</p>
               </div>
             )}
           </div>
@@ -1122,21 +1122,21 @@ const App: React.FC = () => {
         <div className="fixed inset-0 z-[300] flex flex-col items-center justify-center bg-black overflow-hidden p-8">
           <div className="absolute inset-0 z-0 opacity-20 bg-[linear-gradient(to_right,#06b6d4_1px,transparent_1px),linear-gradient(to_bottom,#06b6d4_1px,transparent_1px)] bg-[size:40px_40px] animate-grid-flow"></div>
           <div className="relative z-20 w-full max-w-6xl flex flex-col lg:flex-row gap-16 items-center lg:items-stretch">
-             <div className="w-full lg:w-1/3 space-y-10">
-                <h2 className="font-orbitron text-3xl font-black text-white uppercase tracking-tighter italic">X-CEED <span className="text-cyan-400">CLUSTER</span></h2>
-                <div className="space-y-8 relative border-l border-white/10 pl-8">
-                  {GENERATION_STAGES.map((stage, idx) => (
-                    <div key={stage.id} className={`flex items-center gap-6 transition-all duration-700 ${idx === currentStageIdx ? 'translate-x-4 opacity-100 scale-110' : idx < currentStageIdx ? 'opacity-40 grayscale' : 'opacity-10'}`}>
-                      <div className="w-10 h-10 rounded-lg border-2 flex items-center justify-center font-black">{idx < currentStageIdx ? '✓' : idx + 1}</div>
-                      <div><h4 className="text-xs font-black uppercase tracking-widest text-white">{stage.label}</h4></div>
-                    </div>
-                  ))}
-                </div>
-             </div>
-             <div className="flex-1 bg-black/80 border border-cyan-500/20 p-10 rounded-[2.5rem] font-mono text-[11px] text-cyan-400/80 overflow-y-auto max-h-[450px]">
-                {statusLog.map((log, i) => <div key={i} className="mb-2">{'>'} {log}</div>)}
-                <div ref={logEndRef} />
-             </div>
+            <div className="w-full lg:w-1/3 space-y-10">
+              <h2 className="font-orbitron text-3xl font-black text-white uppercase tracking-tighter italic">X-CEED <span className="text-cyan-400">CLUSTER</span></h2>
+              <div className="space-y-8 relative border-l border-white/10 pl-8">
+                {GENERATION_STAGES.map((stage, idx) => (
+                  <div key={stage.id} className={`flex items-center gap-6 transition-all duration-700 ${idx === currentStageIdx ? 'translate-x-4 opacity-100 scale-110' : idx < currentStageIdx ? 'opacity-40 grayscale' : 'opacity-10'}`}>
+                    <div className="w-10 h-10 rounded-lg border-2 flex items-center justify-center font-black">{idx < currentStageIdx ? '✓' : idx + 1}</div>
+                    <div><h4 className="text-xs font-black uppercase tracking-widest text-white">{stage.label}</h4></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex-1 bg-black/80 border border-cyan-500/20 p-10 rounded-[2.5rem] font-mono text-[11px] text-cyan-400/80 overflow-y-auto max-h-[450px]">
+              {statusLog.map((log, i) => <div key={i} className="mb-2">{'>'} {log}</div>)}
+              <div ref={logEndRef} />
+            </div>
           </div>
         </div>
       )}

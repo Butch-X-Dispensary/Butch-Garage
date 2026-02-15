@@ -16,7 +16,7 @@ const cleanJsonString = (text: string): string => {
 
 export const generateGlobalPattern = async (origin: string, destination: string): Promise<GlobalPattern> => {
   const response = await ai.models.generateContent({
-    model: 'gemini-3-pro-preview',
+    model: 'gemini-1.5-pro',
     contents: `Design a high-quality "HQ Connectivity Pattern" for the Butch Garage International Network.
     Origin Hub: ${origin}
     Destination Hub: ${destination}
@@ -64,7 +64,7 @@ export const generateGlobalPattern = async (origin: string, destination: string)
 
 export const generateAssetPackage = async (request: string) => {
   const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
+    model: 'gemini-1.5-flash',
     contents: `Synthesize a "Butch Garage Sovereign Sales Package" for the request: "${request}".
     
     TONE: 
@@ -106,7 +106,7 @@ export const generateAssetPackage = async (request: string) => {
 
 export const generateVehicleVisual = async (description: string): Promise<string> => {
   const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash-image',
+    model: 'gemini-1.5-flash',
     contents: {
       parts: [
         {
@@ -129,13 +129,13 @@ export const generateVehicleVisual = async (description: string): Promise<string
       return `data:image/png;base64,${base64EncodeString}`;
     }
   }
-  
+
   throw new Error("No image data returned from model");
 };
 
 export const generateSocialCampaign = async (assetName: string, hypeGoal: string): Promise<SocialCampaign> => {
   const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
+    model: 'gemini-1.5-flash',
     contents: `Synthesize a high-tech "Omni-Channel Social Dispatch" for the Butch Garage asset: "${assetName}".
     Mission: "${hypeGoal}".
     
@@ -175,7 +175,7 @@ export const generateSocialCampaign = async (assetName: string, hypeGoal: string
 
 export const generatePerformancePatch = async (vehicleName: string, objective: string): Promise<PerformancePatch> => {
   const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
+    model: 'gemini-1.5-flash',
     contents: `Synthesize a high-tech "Neural Performance Patch" for the asset "${vehicleName}" targeting the mission objective: "${objective}".
     
     TONE: 
@@ -212,7 +212,7 @@ export const generatePerformancePatch = async (vehicleName: string, objective: s
 
 export const generateVehicleBlueprint = async (vehicleName: string, vehicleType: string, origin: string = "Global HQ"): Promise<BlueprintScript> => {
   const response = await ai.models.generateContent({
-    model: 'gemini-3-pro-preview',
+    model: 'gemini-1.5-pro',
     contents: `Generate a detailed technical dossier and Social ROI (Return on Impact) analysis for an asset named "${vehicleName}" of type "${vehicleType}" from the "${origin}" hub.
     
     COMMUNITY & ROI CONTEXT:
@@ -258,7 +258,7 @@ export const generateVehicleBlueprint = async (vehicleName: string, vehicleType:
 
 export const generateFinancialSynergy = async (sector: string, goal: string): Promise<FinancialSynergy> => {
   const response = await ai.models.generateContent({
-    model: 'gemini-3-pro-preview',
+    model: 'gemini-1.5-pro',
     contents: `Design a "Butch Sovereign Philanthropy" financial roadmap to help more poor people in the "${sector}" sector with the goal: "${goal}".
     
     CONTEXT:
@@ -294,7 +294,7 @@ export const generateFinancialSynergy = async (sector: string, goal: string): Pr
 
 export const generateProjectProposal = async (location: string, challenge: string): Promise<ProjectProposal> => {
   const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
+    model: 'gemini-1.5-flash',
     contents: `Propose a high-tech "Butch Global" impact project for "${location}" to solve the challenge of "${challenge}".
     Tone: Executive luxury meets high-stakes humanitarian engineering. Use some elite Taglish.
     Focus on scalable, futuristic solutions that help people.`,
